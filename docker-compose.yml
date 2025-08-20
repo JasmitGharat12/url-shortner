@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  url-shortener:
+    build:
+      context: .         # path to your project root (where Dockerfile is)
+      dockerfile: Dockerfile
+    image: url-shortener:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
